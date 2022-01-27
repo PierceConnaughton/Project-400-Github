@@ -31,8 +31,6 @@ twitterAccessToken = os.environ.get("twitter_access_token")
 twitterAccessSecret = os.environ.get("twitter_access_secret")
 
 
-
-
 #Enters the info to get access the twitter API and stores it
 twitterAPI = twitter.Api(consumer_key=twitterConsumerKey, 
                           consumer_secret=twitterConsumerSecret, 

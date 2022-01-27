@@ -7,6 +7,7 @@ from IPython import get_ipython
 from kivymd.app import MDApp
 from kivymd.uix.label import Label
 from kivymd.uix.gridlayout import MDGridLayout
+from kivymd.uix.floatlayout import MDFloatLayout
 from kivy.uix.textinput import TextInput
 from kivymd.uix.textfield import MDTextField
 from kivy.uix.button import Button
@@ -25,7 +26,7 @@ class MyGrid(MDGridLayout):
     def resetScreen(self):
                 self.tweet.text = ""
                 self.ids.tweet_generated.text = "No Tweet Generated"
-                self.ids.tweet_sentiment.text = "No Sentiment Detected"
+                self.ids.tweet_sentiment.text = "No Sentiment"
     
     def PostTweet(self):
         tweet =  self.ids.tweet_generated.text
@@ -61,7 +62,7 @@ class MyGrid(MDGridLayout):
             MyGrid.resetScreen(self)
         
         else:
-
+            text = text + ' '
             generated = generate.generateTweet(text)
 
             self.ids.tweet_generated.text = f'{generated} '

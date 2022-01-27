@@ -1,56 +1,57 @@
 <MyGrid>:
     tweet: tweet
-    cols: 2 
+    cols: 1 
     rows: 4
     
     
-    
-    
-    
-    MDTextField:
-        id: tweet
-        hint_text: "Input Start of Tweet eg: 'Thanks'"
-        helper_text: "Must be less than 15 characters"
-        helper_text_mode: "persistent"
-        max_text_length: 15
-        pos_hint: {'center_x':0.5}
-        size_hint: (0.1,None)
+    MDFloatLayout:
+        MDTextField:
+            id: tweet
+            hint_text: "Input Start of Tweet eg: 'Thanks'"
+            helper_text: "Must be less than 15 characters"
+            helper_text_mode: "persistent"
+            max_text_length: 15
+            pos_hint: {'center_x':0.3, 'center_y':0.5}
+            size_hint: (0.5,None)
         
     
-    MDFlatButton:
-        text:"Submit"
-        pos_hint: {'center_x':0.5}
-        on_press: root.pressed()
+        MDRaisedButton:
+            text:"Submit"
+            pos_hint: {'x': 0.6, 'center_y': 0.5} 
+            on_press: root.pressed()
 
-    MDLabel:
-        text: "Generated Tweet: "
-        pos_hint: {'center_x':0.5}
+    MDFloatLayout:
+        MDLabel:
+            text: "Generated Tweet: "
+            pos_hint: {'center_x':0.6, 'center_y':0.5}
     
-    MDLabel:
-        id: tweet_generated
-        text: "No Tweet Generated"
-        pos_hint: {'center_x':0.5}
+        MDLabel:
+            id: tweet_generated
+            text: "No Tweet Generated"
+            pos_hint: {'x': 0.6, 'center_y': 0.5} 
 
-    MDLabel:
-        text: "Tweet Sentiment: "
-        pos_hint: {'center_x':0.5}
+    MDFloatLayout:
+        MDLabel:
+            text: "Tweet Sentiment: "
+            pos_hint: {'center_x':0.6, 'center_y':0.5}
     
-    MDLabel:
-        id: tweet_sentiment
-        text: "No Sentiment"
-        pos_hint: {'center_x':0.5}
+        MDLabel:
+            id: tweet_sentiment
+            text: "No Sentiment"
+            pos_hint: {'x': 0.6, 'center_y': 0.5} 
     
-    MDRaisedButton:
-        text:"Post Tweet"
-        pos_hint: {'center_x':0.5}
-        on_press: root.PostTweet()
+    MDFloatLayout:
+        MDRaisedButton:
+            text:"Post Tweet"
+            pos_hint: {'center_x':0.2, 'center_y':0.2}
+            on_press: root.PostTweet()
     
-    MDRaisedButton:
-        text:"Reset"
-        halign: "left"
-        valign: "middle"
-        pos_hint: {'x':.2, 'y':.2}
-        on_press: root.resetScreen()
+        MDRaisedButton:
+            text:"Reset"
+            halign: "left"
+            valign: "middle"
+            pos_hint: {'x': 0.6, 'center_y': 0.2} 
+            on_press: root.resetScreen()
 
    
 
