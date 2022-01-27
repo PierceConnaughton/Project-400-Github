@@ -1,60 +1,106 @@
-<MyGrid>:
-    tweet: tweet
-    cols: 1 
-    rows: 4
-    
-    
-    MDFloatLayout:
-        MDTextField:
-            id: tweet
-            hint_text: "Input Start of Tweet eg: 'Thanks'"
-            helper_text: "Must be less than 15 characters"
-            helper_text_mode: "persistent"
-            max_text_length: 15
-            pos_hint: {'center_x':0.3, 'center_y':0.5}
-            size_hint: (0.5,None)
-        
-    
-        MDRaisedButton:
-            text:"Submit"
-            pos_hint: {'x': 0.6, 'center_y': 0.5} 
-            on_press: root.pressed()
+<MenuScreen>:
+    MDBoxLayout:
+        orientation: "vertical"
+        size: root.width, root.height
 
-    MDFloatLayout:
-        MDLabel:
-            text: "Generated Tweet: "
-            pos_hint: {'center_x':0.6, 'center_y':0.5}
-    
-        MDLabel:
-            id: tweet_generated
-            text: "No Tweet Generated"
-            pos_hint: {'x': 0.6, 'center_y': 0.5} 
+        MDBoxLayout:
+            orientation: "vertical"
+            size_hint: (0.6,1)
+            pos_hint: {'center_x':0.5, 'center_y':0.5}
 
-    MDFloatLayout:
-        MDLabel:
-            text: "Tweet Sentiment: "
-            pos_hint: {'center_x':0.6, 'center_y':0.5}
-    
-        MDLabel:
-            id: tweet_sentiment
-            text: "No Sentiment"
-            pos_hint: {'x': 0.6, 'center_y': 0.5} 
-    
-    MDFloatLayout:
-        MDRaisedButton:
-            text:"Post Tweet"
-            pos_hint: {'center_x':0.2, 'center_y':0.2}
-            on_press: root.PostTweet()
-    
-        MDRaisedButton:
-            text:"Reset"
-            halign: "left"
-            valign: "middle"
-            pos_hint: {'x': 0.6, 'center_y': 0.2} 
-            on_press: root.resetScreen()
-
-   
-
-
+            MDTextField:
+                id: tweet
+                hint_text: "Input Start of Tweet eg: 'Thanks'"
+                helper_text: "Less than 15 characters"
+                helper_text_mode: "persistent"
+                max_text_length: 15
                 
+                
+
+        MDBoxLayout:
+            orientation: "horizontal"
+            pos_hint: {'center_x':0.2, 'center_y':0.5}
+            size_hint: (None,1)
+            spacing: 20
+            MDRaisedButton:  
+                pos_hint: {'center_x':0.4, 'center_y':0.2}
+                text: 'Submit'
+                on_press:
+                    root.pressed()
+                    
+                    
+                    
+            MDRaisedButton:
+                pos_hint: {'center_x':0.4, 'center_y':0.2}
+                text: 'Reset'
+                on_press:
+                    root.resetScreen()
+
         
+            MDRaisedButton:
+                pos_hint: {'center_x':0.4, 'center_y':0.2}
+                text: 'Exit'
+                on_press:
+                    app.stop() 
+
+<TweetScreen>:
+
+    MDBoxLayout:
+        orientation: "vertical"
+        
+        
+        BoxLayout:
+            orientation: "vertical"     
+            padding: "100dp", 0, 0, 0
+            
+            
+            MDLabel:
+                text: "Generated Tweet: "
+                pos_hint: {'center_x':0.5}
+                
+    
+            MDLabel:
+                id: tweet_generated
+                pos_hint: {'center_x':0.5}
+                text: "No Tweet Generated"
+                
+
+        MDBoxLayout:
+            orientation: "vertical"
+            padding: "100dp", 0, 0, 0
+            spacing: 1
+
+            MDLabel:
+                text: "Tweet Sentiment: "
+                pos_hint: {'center_x':0.5}
+    
+            MDLabel:
+                id: tweet_sentiment
+                text: "No Sentiment"
+                pos_hint: {'center_x':0.5}
+
+
+        MDBoxLayout:
+            orientation: "horizontal"
+            spacing: 20 
+            pos_hint: {'center_x':0.2, 'center_y':0.5}
+            size_hint: (None,1)
+
+            MDRaisedButton:
+                pos_hint: {'center_x':0.3, 'center_y':0.2}
+                text: 'Post'
+                on_press:
+                    root.postTweet()
+                    
+            MDRaisedButton:
+                pos_hint: {'center_x':0.5, 'center_y':0.2}
+                text: 'Go Back'
+                on_press:
+                    root.goBackScreen()
+
+        
+            MDRaisedButton:
+                pos_hint: {'center_x':0.7, 'center_y':0.2}
+                text: 'Exit'
+                on_press:
+                    app.stop() 

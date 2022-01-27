@@ -1,3 +1,6 @@
+from logging import root
+from tracemalloc import start
+from turtle import left
 from typing import Text
 import kivymd
 import Load_Sentiment as sentiment
@@ -8,36 +11,80 @@ from kivymd.app import MDApp
 from kivymd.uix.label import Label
 from kivymd.uix.gridlayout import MDGridLayout
 from kivymd.uix.floatlayout import MDFloatLayout
+from kivymd.uix.boxlayout import MDBoxLayout
 from kivy.uix.textinput import TextInput
 from kivymd.uix.textfield import MDTextField
 from kivy.uix.button import Button
 from kivy.uix.widget import Widget
-from kivy.uix.screenmanager import Screen
+from kivy.uix.screenmanager import Screen, ScreenManager
 from kivymd.uix.button import MDRectangleFlatButton
 from kivymd.uix.button import MDRaisedButton
 from kivy.uix.popup import Popup
 from kivymd.uix.screen import MDScreen
 from kivy.properties import ObjectProperty, StringProperty
 
-#create a grid using the grid layout class from kivy        
-class MyGrid(MDGridLayout):
+# Create the screen manager
+sm = ScreenManager()
+tweetText = ''
+
+# Declare both screens
+class MenuScreen(Screen):
+
     tweet = ObjectProperty(None)
+    generatedTweet = ObjectProperty(None)
+    sentimentTweet = ObjectProperty(None)
 
     def resetScreen(self):
-                self.tweet.text = ""
-                self.ids.tweet_generated.text = "No Tweet Generated"
-                self.ids.tweet_sentiment.text = "No Sentiment"
-    
-    def PostTweet(self):
-        tweet =  self.ids.tweet_generated.text
-        sentiment =  self.ids.tweet_sentiment.text
+        tweet = self.ids.tweet.text
+
+        if tweet == '':
+            popup = Popup(title='Tweet Could Not Be Reset',
+            content=Label(text='Tweet was has nothing to reset'),
+            size_hint=(None, None), size=(400, 400))
+            popup.open()
+        
+        else:
+            self.ids.tweet.text = ''   
+
+    def pressed(self):
+        tweet = self.ids.tweet.text
+        
+        if tweet == '':
+            popup = Popup(title='Tweet Could Not Be Submitted',
+            content=Label(text='Tweet cant be blank'),
+            size_hint=(None, None), size=(400, 400))
+            popup.open()
+
+        else:
+            tweetText = tweet + ' '
+
+            generatedTweet = generate.generateTweet(tweetText)
+            sentimentTweet = sentiment.predict(generatedTweet)
+
+            tweetScreen = self.manager.get_screen("tweet")
+            tweetScreen.ids.tweet_generated.text = f'{generatedTweet} '
+            tweetScreen.ids.tweet_sentiment.text = f'{sentimentTweet} sentiment'
+
+            sm.current = 'tweet'
+
+    pass
+
+class TweetScreen(Screen):
+
+    def goBackScreen(self):
+        sm.current = 'menu'  
+
+    def postTweet(self):
+        tweet = self.ids.tweet_generated.text
+        sentimentTweet = self.ids.tweet_sentiment.text
+        
         if tweet == '' or tweet == 'No Tweet Generated':
             popup = Popup(title='Tweet Could Not Be Posted',
             content=Label(text='Tweet cant be blank'),
             size_hint=(None, None), size=(400, 400))
             popup.open()
         
-        elif sentiment == 'Negative sentiment':
+        elif sentimentTweet == 'Negative sentiment':
             popup = Popup(title='Tweet Could Not Be Posted',
             content=Label(text='Tweet cant be negative'),
             size_hint=(None, None), size=(400, 400))
@@ -45,7 +92,7 @@ class MyGrid(MDGridLayout):
         
         else:
             
-            text = 'this a test tweet: ' + self.ids.tweet_generated.text
+            text = 'this a test tweet: ' + tweet
             #post status to twitter
             api.postStatus(text)
             popup = Popup(title='Tweet Posted',
@@ -53,45 +100,17 @@ class MyGrid(MDGridLayout):
             size_hint=(None, None), size=(400, 400))
             popup.open()
 
-    #pressed method, when a button is pressed get the name value and print it too the console
-    def pressed(self):
-        text = self.tweet.text
-        
 
-        if text == '' :
-            MyGrid.resetScreen(self)
-        
-        else:
-            text = text + ' '
-            generated = generate.generateTweet(text)
+    pass
 
-            self.ids.tweet_generated.text = f'{generated} '
-
-
-            #Check sentiment of generated tweet
-            prediction = sentiment.predict(generated)
-        
-            self.ids.tweet_sentiment.text = f'{prediction} sentiment'
-
-
-            #print name to screen
-            print("Tweet:", text, " Sentiment: ", prediction, " Tweet Generated: ", generated)
-
-            #reset name to blank
-            self.tweet.text = ""
-
-
-
-           
-
-#class for Main app
 class MainApp(MDApp):
-    #build the app
 
     def build(self):
-        self.theme_cls.primary_palette = "Green"
-        screen = MDScreen()
-        screen.add_widget(MyGrid())
-        return screen
+        #Add screens to ScreenManager
+        sm.add_widget(MenuScreen(name='menu'))
+        sm.add_widget(TweetScreen(name='tweet'))
 
-MainApp().run()
+        return sm
+
+if __name__ == '__main__':
+    MainApp().run()
