@@ -62,7 +62,7 @@ class MenuScreen(Screen):
             sentimentTweet = sentiment.predict(generatedTweet)
 
             tweetScreen = self.manager.get_screen("tweet")
-            tweetScreen.ids.tweet_generated.text = f'{generatedTweet} '
+            tweetScreen.ids.tweet_generated.text = f'{generatedTweet}'
             tweetScreen.ids.tweet_sentiment.text = f'{sentimentTweet} sentiment'
 
             sm.current = 'tweet'
@@ -107,6 +107,7 @@ class MainApp(MDApp):
 
     def build(self):
         #Add screens to ScreenManager
+        self.theme_cls.secondary_palette = "Red"
         sm.add_widget(MenuScreen(name='menu'))
         sm.add_widget(TweetScreen(name='tweet'))
 

@@ -18,3 +18,5 @@
 #9 Bin Tareaf, R. (2017). Tweets Dataset - Top 20 most followed users in Twitter social platform. dataverse.harvard.edu. [online] Available at: https://dataverse.harvard.edu/dataset.xhtml?id=3047332. Original dataset used for text generation
 
 #10 TensorFlow. (2021). Text generation with an RNN. [online] Available at: https://www.tensorflow.org/text/tutorials/text_generation. Tutorial for how to do text generation with RNN
+
+#11 Rodríguez, A., Yuri, I., Bulgakov, A. and Cont, K. (2021). KivyMD Release 1.0.0.dev0. [online] Available at: https://buildmedia.readthedocs.org/media/pdf/kivymd/latest/kivymd.pdf. Kivy 1.0.0 Documentation

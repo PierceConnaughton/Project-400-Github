@@ -2,6 +2,10 @@
     MDBoxLayout:
         orientation: "vertical"
         size: root.width, root.height
+        
+        MDToolbar:
+            title: "Tweet Generator"
+            right_action_items: [["twitter", lambda x: app.navigation_draw()]]
 
         MDBoxLayout:
             orientation: "vertical"
@@ -22,32 +26,42 @@
             pos_hint: {'center_x':0.2, 'center_y':0.5}
             size_hint: (None,1)
             spacing: 20
-            MDRaisedButton:  
+            MDRectangleFlatIconButton:  
                 pos_hint: {'center_x':0.4, 'center_y':0.2}
+                icon:'send'
                 text: 'Submit'
                 on_press:
                     root.pressed()
                     
                     
                     
-            MDRaisedButton:
+            MDRectangleFlatIconButton:
                 pos_hint: {'center_x':0.4, 'center_y':0.2}
+                icon: 'redo'
                 text: 'Reset'
                 on_press:
                     root.resetScreen()
 
         
-            MDRaisedButton:
+            MDRectangleFlatIconButton:
                 pos_hint: {'center_x':0.4, 'center_y':0.2}
-                text: 'Exit'
+                icon: 'exit-run'
+                text: '[font=Times]Exit[/font]'
+                md_bg_color: app.theme_cls.primary_dark
                 on_press:
-                    app.stop() 
+                    app.stop()
+
+        
 
 <TweetScreen>:
+    
 
     MDBoxLayout:
         orientation: "vertical"
-        
+        MDToolbar:
+            title: "Tweet Generator"
+            right_action_items: [["twitter", lambda x: app.navigation_draw()]]
+            
         
         BoxLayout:
             orientation: "vertical"     
@@ -55,11 +69,13 @@
             
             
             MDLabel:
-                text: "Generated Tweet: "
+                markup: True
+                text: "[i][b]Generated Tweet[/b][/i]"
                 pos_hint: {'center_x':0.5}
                 
     
             MDLabel:
+                markup: True
                 id: tweet_generated
                 pos_hint: {'center_x':0.5}
                 text: "No Tweet Generated"
@@ -71,10 +87,12 @@
             spacing: 1
 
             MDLabel:
-                text: "Tweet Sentiment: "
+                markup: True
+                text: "[i][b]Tweet Sentiment[/b][/i]"
                 pos_hint: {'center_x':0.5}
     
             MDLabel:
+                markup: True
                 id: tweet_sentiment
                 text: "No Sentiment"
                 pos_hint: {'center_x':0.5}
@@ -86,21 +104,28 @@
             pos_hint: {'center_x':0.2, 'center_y':0.5}
             size_hint: (None,1)
 
-            MDRaisedButton:
+            MDRectangleFlatIconButton:  
+                icon:'send'
+                markup: True
                 pos_hint: {'center_x':0.3, 'center_y':0.2}
                 text: 'Post'
                 on_press:
                     root.postTweet()
                     
-            MDRaisedButton:
+            MDRectangleFlatIconButton:  
+                icon:'keyboard-backspace'
+                markup: True
                 pos_hint: {'center_x':0.5, 'center_y':0.2}
                 text: 'Go Back'
                 on_press:
                     root.goBackScreen()
 
         
-            MDRaisedButton:
+            MDRectangleFlatIconButton:  
+                icon:'exit-run'
+                markup: True
                 pos_hint: {'center_x':0.7, 'center_y':0.2}
-                text: 'Exit'
+                text: '[font=Times]Exit[/font]'
+                md_bg_color: app.theme_cls.primary_dark
                 on_press:
                     app.stop() 
