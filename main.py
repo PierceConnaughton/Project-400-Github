@@ -6,6 +6,8 @@ import kivymd
 import Load_Sentiment as sentiment
 import Load_Generation as generate
 import Twitter_API as api
+import requests
+import json
 from IPython import get_ipython
 from kivymd.app import MDApp
 from kivymd.uix.label import Label
@@ -103,11 +105,75 @@ class TweetScreen(Screen):
 
     pass
 
+class LoginScreen(Screen):
+    firebaseUrl = "https://deepsocial-7fb43-default-rtdb.europe-west1.firebasedatabase.app/"
+
+    webApi = "AIzaSyDQVwCqEr5N4Mj14Ie6iSIWcI7n2HAuZlI" 
+
+    def SignUp(self, email, password):
+        signinUrl = "https://www.googleapis.com/identitytoolkit/v3/relyingparty/signupNewUser?key=" + self.webApi
+
+        signupPayload = {"email": email, "password": password, "returnSecureToken": True}
+
+        #Post data to the authentication
+        signupRequest = requests.post(signinUrl, data = signupPayload )
+        signupData = json.loads(signupRequest .content.decode())
+
+        if(signupRequest.ok == False):
+            err = signupData["error"]["message"]
+
+            if(err == "EMAIL_EXISTS"):
+               self.SignIn(email, password)
+            
+            else:
+                self.ids.loginMessage.text = err.replace("_", " ")
+
+        else:
+            self.ids.loginMessage.text = ""
+            refreshToken = signupData["refreshToken"]
+            localID = signupData["localId"]
+            idToken = signupData["idToken"]
+
+            #Save refresh Tokem
+            with open("refreshToken.txt", "w")as f:
+                f.write(refreshToken)
+
+            #Save email to database
+            myData = '{"email" : \"' + email + '\"}'
+            #Send email to database
+            postData = requests.patch(self.firebaseUrl + localID + ".json?auth=" + idToken, data=myData)
+
+            sm.current = 'menu'  
+
+    
+    def SignIn(self, email, password):
+        signinUrl = "https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPassword?key=" + self.webApi
+        signinPayload = {"email": email, "password": password, "returnSecureToken": True}
+        signinRequest = requests.post(signinUrl, data=signinPayload)
+        signinData = json.loads(signinRequest.content.decode())
+
+        if signinRequest.ok == True:
+            refreshToken = signinData['refreshToken']
+            localId = signinData['localId']
+            idToken = signinData['idToken']
+
+            with open("refreshToken.txt", "w")as f:
+                f.write(refreshToken)
+
+            sm.current = 'menu'
+
+        elif signinRequest.ok == False:
+            err = signinData["error"]["message"]
+            self.ids.loginMessage.text = err.replace("_", " ")
+
+    pass
+
 class MainApp(MDApp):
 
     def build(self):
         #Add screens to ScreenManager
         self.theme_cls.secondary_palette = "Red"
+        sm.add_widget(LoginScreen(name='login'))
         sm.add_widget(MenuScreen(name='menu'))
         sm.add_widget(TweetScreen(name='tweet'))
 

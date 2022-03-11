@@ -129,3 +129,48 @@
                 md_bg_color: app.theme_cls.primary_dark
                 on_press:
                     app.stop() 
+
+<LoginScreen>:
+    MDBoxLayout:
+        orientation: "vertical"
+        padding: 0, 0, 0, 0
+        
+        MDToolbar:
+            title: "Tweet Generator"
+            right_action_items: [["twitter", lambda x: app.navigation_draw()]]
+        
+        
+        MDBoxLayout:
+            orientation: "vertical"
+            padding: "100dp", 0, 0, 0
+            spacing: 1
+
+            MDCard: 
+                size_hint: None, None
+                size: 300,300
+                pos_hint: {"center_x":0.5,"center_y":0.5}
+
+                MDBoxLayout:
+                    orientation: "vertical"
+
+                    MDTextField:
+                        id: loginEmail
+                        hint_text: "email"
+                        pos_hint: {'center_x':0.5, 'center_y':0.8}
+
+                    MDTextField:
+                        password: True
+                        id: loginPassword
+                        pos_hint: {'center_x':0.5, 'center_y':0.5}
+                        hint_text: "password"
+
+                    MDLabel:
+                        pos_hint: {'center_x':0.5, 'center_y':0.3}
+                        id: loginMessage
+                        color: (1,0,0,1)
+
+                    MDRaisedButton:
+                        pos_hint: {'center_x':0.5, 'center_y':0.2}
+                        text: 'Login'
+                        on_press:
+                            root.SignUp(loginEmail.text, loginPassword.text)
