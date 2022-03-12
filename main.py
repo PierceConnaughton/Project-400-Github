@@ -109,42 +109,6 @@ class LoginScreen(Screen):
     firebaseUrl = "https://deepsocial-7fb43-default-rtdb.europe-west1.firebasedatabase.app/"
 
     webApi = "AIzaSyDQVwCqEr5N4Mj14Ie6iSIWcI7n2HAuZlI" 
-
-    def SignUp(self, email, password):
-        signinUrl = "https://www.googleapis.com/identitytoolkit/v3/relyingparty/signupNewUser?key=" + self.webApi
-
-        signupPayload = {"email": email, "password": password, "returnSecureToken": True}
-
-        #Post data to the authentication
-        signupRequest = requests.post(signinUrl, data = signupPayload )
-        signupData = json.loads(signupRequest .content.decode())
-
-        if(signupRequest.ok == False):
-            err = signupData["error"]["message"]
-
-            if(err == "EMAIL_EXISTS"):
-               self.SignIn(email, password)
-            
-            else:
-                self.ids.loginMessage.text = err.replace("_", " ")
-
-        else:
-            self.ids.loginMessage.text = ""
-            refreshToken = signupData["refreshToken"]
-            localID = signupData["localId"]
-            idToken = signupData["idToken"]
-
-            #Save refresh Tokem
-            with open("refreshToken.txt", "w")as f:
-                f.write(refreshToken)
-
-            #Save email to database
-            myData = '{"email" : \"' + email + '\"}'
-            #Send email to database
-            postData = requests.patch(self.firebaseUrl + localID + ".json?auth=" + idToken, data=myData)
-
-            sm.current = 'menu'  
-
     
     def SignIn(self, email, password):
         signinUrl = "https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPassword?key=" + self.webApi
@@ -166,7 +130,62 @@ class LoginScreen(Screen):
             err = signinData["error"]["message"]
             self.ids.loginMessage.text = err.replace("_", " ")
 
+    def SignUp(self):
+        sm.current = 'signup'
+
     pass
+
+class SignupScreen(Screen):
+    firebaseUrl = "https://deepsocial-7fb43-default-rtdb.europe-west1.firebasedatabase.app/"
+
+    webApi = "AIzaSyDQVwCqEr5N4Mj14Ie6iSIWcI7n2HAuZlI" 
+
+    def SignIn(self):
+        sm.current = 'login'
+
+    def SignUp(self, email, password, name):
+
+        if name == '':
+            self.ids.signupMessage.text = 'Name can\'t be blank'
+            return
+
+        signinUrl = "https://www.googleapis.com/identitytoolkit/v3/relyingparty/signupNewUser?key=" + self.webApi
+
+        signupPayload = {"email": email, "password": password, "returnSecureToken": True}
+
+        #Post data to the authentication
+        signupRequest = requests.post(signinUrl, data = signupPayload )
+        signupData = json.loads(signupRequest .content.decode())
+
+        if(signupRequest.ok == False):
+            err = signupData["error"]["message"]
+
+            if(err == "EMAIL_EXISTS"):
+               self.ids.signupMessage.text = 'User with this email already exists!'
+            
+            else:
+                self.ids.signupMessage.text = err.replace("_", " ")
+
+        else:
+            self.ids.signupMessage.text = ""
+            refreshToken = signupData["refreshToken"]
+            localID = signupData["localId"]
+            idToken = signupData["idToken"]
+
+            #Save refresh Tokem
+            with open("refreshToken.txt", "w")as f:
+                f.write(refreshToken)
+
+            #Save email and name to the database
+            myData = '{"email" : \"' + email + '\" , "name" : \"' + name + '\"}'
+
+            #Send email to database
+            postData = requests.patch(self.firebaseUrl + localID + ".json?auth=" + idToken, data=myData)
+
+            sm.current = 'menu'  
+
+    pass
+
 
 class MainApp(MDApp):
 
@@ -174,6 +193,7 @@ class MainApp(MDApp):
         #Add screens to ScreenManager
         self.theme_cls.secondary_palette = "Red"
         sm.add_widget(LoginScreen(name='login'))
+        sm.add_widget(SignupScreen(name='signup'))
         sm.add_widget(MenuScreen(name='menu'))
         sm.add_widget(TweetScreen(name='tweet'))
 

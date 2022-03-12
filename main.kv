@@ -18,22 +18,19 @@
                 helper_text: "Less than 15 characters"
                 helper_text_mode: "persistent"
                 max_text_length: 15
-                
-                
 
         MDBoxLayout:
             orientation: "horizontal"
             pos_hint: {'center_x':0.2, 'center_y':0.5}
             size_hint: (None,1)
             spacing: 20
+
             MDRectangleFlatIconButton:  
                 pos_hint: {'center_x':0.4, 'center_y':0.2}
                 icon:'send'
                 text: 'Submit'
                 on_press:
-                    root.pressed()
-                    
-                    
+                    root.pressed()   
                     
             MDRectangleFlatIconButton:
                 pos_hint: {'center_x':0.4, 'center_y':0.2}
@@ -54,7 +51,6 @@
         
 
 <TweetScreen>:
-    
 
     MDBoxLayout:
         orientation: "vertical"
@@ -130,6 +126,7 @@
                 on_press:
                     app.stop() 
 
+
 <LoginScreen>:
     MDBoxLayout:
         orientation: "vertical"
@@ -142,35 +139,146 @@
         
         MDBoxLayout:
             orientation: "vertical"
-            padding: "100dp", 0, 0, 0
+            padding: 0, 0, 0, "100dp"
             spacing: 1
 
             MDCard: 
                 size_hint: None, None
-                size: 300,300
+                size: 350,350
                 pos_hint: {"center_x":0.5,"center_y":0.5}
 
                 MDBoxLayout:
                     orientation: "vertical"
+                    spacing: 20
+                    padding: 0, "10dp", 0, "10dp"
 
-                    MDTextField:
+                    MDLabel:
+                        markup: True
+                        text: "[i][b]Firebase Login[/b][/i]"
+                        pos_hint: {'center_x':0.85}
+
+                    MDTextFieldRound:
+                        size_hint: (0.8,0.4)
+                        icon_left: "email"
                         id: loginEmail
-                        hint_text: "email"
+                        hint_text: "E-mail"
                         pos_hint: {'center_x':0.5, 'center_y':0.8}
 
-                    MDTextField:
+                    MDTextFieldRound:
+                        size_hint: (0.8,0.4)
+                        icon_left: "key"
                         password: True
                         id: loginPassword
                         pos_hint: {'center_x':0.5, 'center_y':0.5}
-                        hint_text: "password"
+                        hint_text: "Password"
 
                     MDLabel:
-                        pos_hint: {'center_x':0.5, 'center_y':0.3}
+                        pos_hint: {'center_x':0.5, 'center_y':0.4}
                         id: loginMessage
                         color: (1,0,0,1)
+                        pos_hint: {'center_x':0.8}
+                    
+                    MDBoxLayout:
+                        orientation: "horizontal"
+                        spacing: 100
+                        pos_hint: {'center_x':0.2, 'center_y':0.5}
+                        size_hint: (None,1)
 
-                    MDRaisedButton:
+                        MDRectangleFlatIconButton:  
+                            icon:'login'
+                            markup: True
+                            pos_hint: {'center_x':0.3, 'center_y':0.2}
+                            text: 'Login'
+                            on_press:
+                                root.SignIn(loginEmail.text, loginPassword.text)
+
+                        MDRectangleFlatIconButton:  
+                            icon:'logout'
+                            markup: True
+                            pos_hint: {'center_x':0.3, 'center_y':0.2}
+                            text: 'Try Signup'
+                            on_press:
+                                root.SignUp()
+
+
+<SignupScreen>:
+    MDBoxLayout:
+        orientation: "vertical"
+        padding: 0, 0, 0, 0
+        
+        MDToolbar:
+            title: "Tweet Generator"
+            right_action_items: [["twitter", lambda x: app.navigation_draw()]]
+        
+        
+        MDBoxLayout:
+            orientation: "vertical"
+            padding: 0, 0, 0, "100dp"
+            spacing: 1
+
+            MDCard: 
+                size_hint: None, None
+                size: 350,350
+                pos_hint: {"center_x":0.5,"center_y":0.5}
+
+                MDBoxLayout:
+                    orientation: "vertical"
+                    spacing: 20
+                    padding: 0, "10dp", 0, "10dp"
+
+                    MDLabel:
+                        markup: True
+                        text: "[i][b]Firebase Signup[/b][/i]"
+                        pos_hint: {'center_x':0.85}
+
+                    MDTextFieldRound:
+                        size_hint: (0.8,0.5)
+                        icon_left: "account"
+                        id: signupName
+                        hint_text: "Full Name"
                         pos_hint: {'center_x':0.5, 'center_y':0.2}
-                        text: 'Login'
-                        on_press:
-                            root.SignUp(loginEmail.text, loginPassword.text)
+
+                    MDTextFieldRound:
+                        size_hint: (0.8,0.5)
+                        icon_left: "email"
+                        id: signupEmail
+                        hint_text: "E-mail"
+                        pos_hint: {'center_x':0.5, 'center_y':0.9}
+
+
+                    MDTextFieldRound:
+                        size_hint: (0.8,0.5)
+                        icon_left: "key"
+                        password: True
+                        id: signupPassword
+                        pos_hint: {'center_x':0.5, 'center_y':0.5}
+                        hint_text: "Password"
+
+
+                    MDLabel:
+                        pos_hint: {'center_x':0.8}
+                        id: signupMessage
+                        color: (1,0,0,1)
+
+                    MDBoxLayout:
+                        orientation: "horizontal"
+                        spacing: 100 
+                        pos_hint: {'center_x':0.2, 'center_y':0.5}
+                        size_hint: (None,1)
+
+                        MDRectangleFlatIconButton:  
+                            icon:'login'
+                            markup: True
+                            pos_hint: {'center_x':0.3, 'center_y':0.2}
+                            text: 'Signup'
+                            on_press:
+                                root.SignUp(signupEmail.text, signupPassword.text, signupName.text)
+
+                        MDRectangleFlatIconButton:  
+                            icon:'logout'
+                            markup: True
+                            pos_hint: {'center_x':0.3, 'center_y':0.2}
+                            text: 'Try Login'
+                            on_press:
+                                root.SignIn()
+                        
