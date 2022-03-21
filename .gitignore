@@ -364,3 +364,10 @@ FodyWeavers.xsd
 
 # Ignore .env files
 .env
+
+# Ignore .csv files
+.csv
+
+# Ignore refresh token
+refreshToken.txt
+

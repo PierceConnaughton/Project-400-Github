@@ -25,13 +25,23 @@ from kivy.uix.popup import Popup
 from kivymd.uix.screen import MDScreen
 from kivy.properties import ObjectProperty, StringProperty
 
+webApi = "AIzaSyDQVwCqEr5N4Mj14Ie6iSIWcI7n2HAuZlI" 
+
 # Create the screen manager
 sm = ScreenManager()
 tweetText = ''
 
+def exchange_refresh_token(self, refresh_token):
+        refresh_url = "https://securetoken.googleapis.com/v1/token?key=" + self.webApi
+        refresh_payload = '{"grant_type": "refresh_token", "refresh_token": "%s"}' % refresh_token
+        refresh_req = requests.post(refresh_url, data=refresh_payload)
+        id_token = refresh_req.json()['id_token']
+        local_id = refresh_req.json()['user_id']
+        return id_token, local_id
+
 # Declare both screens
 class MenuScreen(Screen):
-
+            
     tweet = ObjectProperty(None)
     generatedTweet = ObjectProperty(None)
     sentimentTweet = ObjectProperty(None)
@@ -72,7 +82,7 @@ class MenuScreen(Screen):
     pass
 
 class TweetScreen(Screen):
-
+    
     def goBackScreen(self):
         sm.current = 'menu'  
 
@@ -106,6 +116,17 @@ class TweetScreen(Screen):
     pass
 
 class LoginScreen(Screen):
+
+    try:
+        with("refreshToken.txt", 'r') as f:
+            refresh_token = f.read()
+        
+        id_token, local_id = exchange_refresh_token(refresh_token)
+        sm.current = 'menu'
+    
+    except:
+        pass
+
     firebaseUrl = "https://deepsocial-7fb43-default-rtdb.europe-west1.firebasedatabase.app/"
 
     webApi = "AIzaSyDQVwCqEr5N4Mj14Ie6iSIWcI7n2HAuZlI" 
@@ -138,7 +159,7 @@ class LoginScreen(Screen):
 class SignupScreen(Screen):
     firebaseUrl = "https://deepsocial-7fb43-default-rtdb.europe-west1.firebasedatabase.app/"
 
-    webApi = "AIzaSyDQVwCqEr5N4Mj14Ie6iSIWcI7n2HAuZlI" 
+    
 
     def SignIn(self):
         sm.current = 'login'
@@ -201,3 +222,5 @@ class MainApp(MDApp):
 
 if __name__ == '__main__':
     MainApp().run()
+
+

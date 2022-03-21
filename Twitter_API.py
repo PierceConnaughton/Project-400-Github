@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 # coding: utf-8
-
 #Importing all neccassary libraries
 #to send get requests from API
 import requests
@@ -15,8 +14,11 @@ import dateutil.parser
 import unicodedata
 #Used for checking the wait time between requests
 import time
-
+import requests
 import twitter
+
+# import the module
+import tweepy
 
 import sys
 #!{sys.executable} -m pip install python-twitter 
@@ -30,6 +32,20 @@ twitterConsumerSecret = os.environ.get("twitter_consumer_secret")
 twitterAccessToken = os.environ.get("twitter_access_token")
 twitterAccessSecret = os.environ.get("twitter_access_secret")
 
+twitterConsumerKeyDs = os.environ.get("twitter_consumer_keyDs")
+twitterConsumerSecretDs = os.environ.get("twitter_consumer_secretDs")
+twitterAccessTokenDs = os.environ.get("twitter_access_tokenDs")
+twitterAccessSecretDs = os.environ.get("twitter_access_secretDs")
+
+auth = tweepy.OAuthHandler(twitterConsumerKey, twitterConsumerSecret)
+auth.set_access_token(twitterAccessToken, twitterAccessSecret)
+
+authDs = tweepy.OAuthHandler(twitterConsumerKeyDs, twitterConsumerSecretDs)
+authDs.set_access_token(twitterAccessTokenDs, twitterAccessSecretDs)
+
+api = tweepy.API(auth)
+
+apiDs = tweepy.API(authDs)
 
 #Enters the info to get access the twitter API and stores it
 twitterAPI = twitter.Api(consumer_key=twitterConsumerKey, 
@@ -37,12 +53,28 @@ twitterAPI = twitter.Api(consumer_key=twitterConsumerKey,
                           access_token_key=twitterAccessToken, 
                           access_token_secret=twitterAccessSecret)
 
+twitterAPIDS = twitter.Api(consumer_key=twitterConsumerKeyDs, 
+                          consumer_secret=twitterConsumerSecretDs, 
+                          access_token_key=twitterAccessTokenDs, 
+                          access_token_secret=twitterAccessSecretDs)
+
 
 
 #Allows a user to post an update
 def postStatus(message):
     status = twitterAPI.PostUpdate(message)
+    print("Status ID: " + str(status.id))
+    RetweetStatus(status.id)
+    likeStatus(status.id)
     return status
+
+def likeStatus(id):
+    apiDs.create_favorite(id)
+
+def RetweetStatus(id):
+    apiDs.retweet(id)
+
+
 
 #Allows a user to get last 200 tweets from a specific user
 def getTimeline(handle):
