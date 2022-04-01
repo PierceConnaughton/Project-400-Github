@@ -4,8 +4,9 @@
         size: root.width, root.height
         
         MDToolbar:
-            title: "Tweet Generator"
+            title: "DeepSocial"
             right_action_items: [["twitter", lambda x: app.navigation_draw()]]
+            left_action_items: [["logout", lambda x: root.logout()]]
 
         MDBoxLayout:
             orientation: "vertical"
@@ -48,16 +49,63 @@
                 on_press:
                     app.stop()
 
+
+<PreviewScreen>:        
+    MDBoxLayout:
+        orientation: "vertical"
+        MDToolbar:
+            title: "DeepSocial"
+            right_action_items: [["twitter", lambda x: app.navigation_draw()]]
+            left_action_items: [["logout", lambda x: root.logout()]]
+
+        BoxLayout:
+            orientation: "vertical"     
+            padding: 0, 0, 0, 0
+
+            Image:
+                pos_hint: {'center_x':0.5}
+                id: tweet_preview
         
+        MDBoxLayout:
+            orientation: "horizontal"
+            spacing: 20 
+            pos_hint: {'center_x':0.2, 'center_y':0.5}
+            size_hint: (None,1)
+
+            MDRectangleFlatIconButton:  
+                icon:'send'
+                markup: True
+                pos_hint: {'center_x':0.4, 'center_y':0.2}
+                text: 'Post'
+                on_press:
+                    root.postTweet()
+                    
+            MDRectangleFlatIconButton:  
+                icon:'keyboard-backspace'
+                markup: True
+                pos_hint: {'center_x':0.4, 'center_y':0.2}
+                text: 'Go Back'
+                on_press:
+                    root.goBackScreen()
+
+        
+            MDRectangleFlatIconButton:  
+                icon:'exit-run'
+                markup: True
+                pos_hint: {'center_x':0.4, 'center_y':0.2}
+                text: '[font=Times]Exit[/font]'
+                md_bg_color: app.theme_cls.primary_dark
+                on_press:
+                    app.stop()  
 
 <TweetScreen>:
 
     MDBoxLayout:
         orientation: "vertical"
         MDToolbar:
-            title: "Tweet Generator"
+            title: "DeepSocial"
             right_action_items: [["twitter", lambda x: app.navigation_draw()]]
-            
+            left_action_items: [["logout", lambda x: root.logout()]]
         
         BoxLayout:
             orientation: "vertical"     
@@ -93,6 +141,27 @@
                 text: "No Sentiment"
                 pos_hint: {'center_x':0.5}
 
+        
+        MDBoxLayout:
+            orientation: "vertical"
+            padding: "100dp", 0, 0, 0
+            spacing: 1
+
+            MDLabel:
+                markup: True
+                text: "[i][b]Preview of tweet[/b][/i]"
+                pos_hint: {'center_x':0.5}
+    
+            MDRectangleFlatIconButton:  
+                icon:'eye'
+                markup: True
+                pos_hint: {'center_x':0.2}
+                text: 'Preview'
+                on_press:
+                    root.previewTweet()
+                
+                
+
 
         MDBoxLayout:
             orientation: "horizontal"
@@ -127,13 +196,19 @@
                     app.stop() 
 
 
+
+
+
+
+
+
 <LoginScreen>:
     MDBoxLayout:
         orientation: "vertical"
         padding: 0, 0, 0, 0
         
         MDToolbar:
-            title: "Tweet Generator"
+            title: "DeepSocial"
             right_action_items: [["twitter", lambda x: app.navigation_draw()]]
         
         
@@ -207,7 +282,7 @@
         padding: 0, 0, 0, 0
         
         MDToolbar:
-            title: "Tweet Generator"
+            title: "DeepSocial"
             right_action_items: [["twitter", lambda x: app.navigation_draw()]]
         
         
@@ -236,6 +311,13 @@
                         icon_left: "account"
                         id: signupName
                         hint_text: "Full Name"
+                        pos_hint: {'center_x':0.5, 'center_y':0.2}
+
+                    MDTextFieldRound:
+                        size_hint: (0.8,0.5)
+                        icon_left: "account"
+                        id: signupUsername
+                        hint_text: "Username"
                         pos_hint: {'center_x':0.5, 'center_y':0.2}
 
                     MDTextFieldRound:
@@ -272,7 +354,7 @@
                             pos_hint: {'center_x':0.3, 'center_y':0.2}
                             text: 'Signup'
                             on_press:
-                                root.SignUp(signupEmail.text, signupPassword.text, signupName.text)
+                                root.SignUp(signupEmail.text, signupPassword.text, signupName.text, signupUsername.text)
 
                         MDRectangleFlatIconButton:  
                             icon:'logout'
