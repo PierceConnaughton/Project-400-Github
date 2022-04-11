@@ -65,3 +65,5 @@ def createPreview(tweet, name, username):
     userPhoto = Image.open('profile-modified.png', 'r')
     img.paste(userPhoto, corPhoto, mask=userPhoto)
     img.save(f'{imgName}.png')
+
+    return img

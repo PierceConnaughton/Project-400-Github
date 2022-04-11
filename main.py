@@ -1,4 +1,6 @@
+from ast import If
 from logging import root
+from tkinter.tix import WINDOW
 from tracemalloc import start
 from turtle import left
 from typing import Text
@@ -28,6 +30,10 @@ from kivy.uix.popup import Popup
 from kivymd.uix.screen import MDScreen
 from kivy.properties import ObjectProperty, StringProperty
 
+#Set size of screen
+from kivy.core.window import Window
+Window.size = (370, 560)
+
 # Create the screen manager
 sm = ScreenManager()
 
@@ -35,6 +41,7 @@ sm = ScreenManager()
 tweetText = ''
 localId = "no id"
 idToken = "no id"
+
 
 # Function for creating a preview using the generated tweet
 def newPreview(generatedTweet):
@@ -44,8 +51,6 @@ def newPreview(generatedTweet):
         requestRefresh, id_token, local_id = myfirebase.tryRefresh()
         result = requests.get("https://deepsocial-7fb43-default-rtdb.europe-west1.firebasedatabase.app/" + local_id + ".json?auth=" + id_token)
         data = json.loads(result.content.decode())
-
-        print(data)
     
         preview.createPreview(generatedTweet, data['name'], data['username'])
         return
@@ -110,6 +115,15 @@ class MenuScreen(Screen):
             #Get the tweet screen and set the generated tweet text and sentiment text, to what was generated
             tweetScreen = self.manager.get_screen("tweet")
             tweetScreen.ids.tweet_generated.text = f'{generatedTweet}'
+
+            #If positive change text to green
+            if sentimentTweet == 'Positive sentiment':
+                tweetScreen.ids.tweet_generated.color = 53, 255, 71, 0.5
+            
+            #If negative change text to red
+            elif sentimentTweet == 'Negative sentiment':
+                 tweetScreen.ids.tweet_generated.color = 255, 99, 71, 1
+
             tweetScreen.ids.tweet_sentiment.text = f'{sentimentTweet} sentiment'
 
             #Move to tweet screen
