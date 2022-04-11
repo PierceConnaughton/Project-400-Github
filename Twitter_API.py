@@ -26,12 +26,13 @@ import dotenv as dte
 dte.load_dotenv()
 
 
-#Gets the parameters needed to access the API from my private enviroment
+#Gets the parameters needed to access the API's from my private enviroment
 twitterConsumerKey = os.environ.get("twitter_consumer_key")
 twitterConsumerSecret = os.environ.get("twitter_consumer_secret")
 twitterAccessToken = os.environ.get("twitter_access_token")
 twitterAccessSecret = os.environ.get("twitter_access_secret")
 
+#This is the Deepsocial account's twitter tokens
 twitterConsumerKeyDs = os.environ.get("twitter_consumer_keyDs")
 twitterConsumerSecretDs = os.environ.get("twitter_consumer_secretDs")
 twitterAccessTokenDs = os.environ.get("twitter_access_tokenDs")
@@ -62,12 +63,14 @@ twitterAPIDS = twitter.Api(consumer_key=twitterConsumerKeyDs,
 
 #Allows a user to post an update
 def postStatus(message):
+    #post the tweet an get the data about the new tweet
     status = twitterAPI.PostUpdate(message)
-    print("Status ID: " + str(status.id))
+    #Use the tweet data to get the id to allow for deepsocial account to post and like the tweet
     RetweetStatus(status.id)
     likeStatus(status.id)
     return status
 
+# Allows deep social to like and retweet the generated tweet
 def likeStatus(id):
     apiDs.create_favorite(id)
 
@@ -100,6 +103,7 @@ def getPopularTweetsTerm(term):
     
     return search
 
+#Get the most popular tweets
 def getPopularTweets():
     
     search = twitterAPI.GetSearch(raw_query=None, geocode=None, since_id=None, max_id=None, until=None, 

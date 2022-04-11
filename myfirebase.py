@@ -1,5 +1,6 @@
 import requests
 
+#Function for when given a refresh token check to see if it can actually be used
 def exchange_refresh_token(refresh_token):
         webApi = "AIzaSyDQVwCqEr5N4Mj14Ie6iSIWcI7n2HAuZlI" 
         refresh_url = "https://securetoken.googleapis.com/v1/token?key=" + webApi
@@ -10,6 +11,7 @@ def exchange_refresh_token(refresh_token):
         
         return refresh_req.ok, id_token, local_id
 
+#function for logging into firebase
 def tryRefresh():
     try:
         with open("refreshToken.txt", 'r') as f:
