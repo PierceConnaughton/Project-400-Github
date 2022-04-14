@@ -9,11 +9,11 @@ import Load_Generation as generate
 class TestApi(unittest.TestCase):
     def test_search_tweets(self):
         """
-        Test that api call for getting popular tweets based on a term is getting a dict json of tweets
+        Test that api call for getting popular tweets based on a term is getting a list of tweets
         """
         data = "beach"
-        result = api.getPopularTweetsTerm(data)
-        self.assertIsInstance(result, dict)
+        result = api.getPopularTweetsTerm(data)['statuses']
+        self.assertIsInstance(result, list)
     
     def test_get_timeline(self):
         """
@@ -23,13 +23,13 @@ class TestApi(unittest.TestCase):
         result = api.getTimeline(data)
         self.assertIsInstance(result, list)
 
-    # def test_post_tweet(self):
-    #     """
-    #     Test that api call for posting a tweet returns a status that includes the text that was input
-    #     """
-    #     data = "test tweet"
-    #     result = api.postStatus(data).text
-    #     self.assertEqual(result, "test tweet")
+    def test_post_tweet(self):
+        """
+        Test that api call for posting a tweet returns a status that includes the text that was input
+        """
+        data = "test tweet"
+        result = api.postStatus(data).text
+        self.assertEqual(result, "test tweet")
 
 class TestPreview(unittest.TestCase):
     def test_preview(self):
@@ -71,7 +71,8 @@ class TestGeneration(unittest.TestCase):
         """
         data = "Hello"
         result = generate.generateTweet(data)
-        self.assertGreater(result, "Hello")
+        self.assertGreater(result, data)
 
 if __name__ == '__main__':
+    #print(api.getPopularTweetsTerm("data"))
     unittest.main()

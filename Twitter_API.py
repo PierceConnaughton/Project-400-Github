@@ -26,17 +26,28 @@ import dotenv as dte
 dte.load_dotenv()
 
 
+# Originally stored access in a private environment but would not be able to access this on github
 #Gets the parameters needed to access the API's from my private enviroment
-twitterConsumerKey = os.environ.get("twitter_consumer_key")
-twitterConsumerSecret = os.environ.get("twitter_consumer_secret")
-twitterAccessToken = os.environ.get("twitter_access_token")
-twitterAccessSecret = os.environ.get("twitter_access_secret")
+# twitterConsumerKey = os.environ.get("twitter_consumer_key")
+# twitterConsumerSecret = os.environ.get("twitter_consumer_secret")
+# twitterAccessToken = os.environ.get("twitter_access_token")
+# twitterAccessSecret = os.environ.get("twitter_access_secret")
 
 #This is the Deepsocial account's twitter tokens
-twitterConsumerKeyDs = os.environ.get("twitter_consumer_keyDs")
-twitterConsumerSecretDs = os.environ.get("twitter_consumer_secretDs")
-twitterAccessTokenDs = os.environ.get("twitter_access_tokenDs")
-twitterAccessSecretDs = os.environ.get("twitter_access_secretDs")
+# twitterConsumerKeyDs = os.environ.get("twitter_consumer_keyDs")
+# twitterConsumerSecretDs = os.environ.get("twitter_consumer_secretDs")
+# twitterAccessTokenDs = os.environ.get("twitter_access_tokenDs")
+# twitterAccessSecretDs = os.environ.get("twitter_access_secretDs")
+
+twitterConsumerKey = 's6IMGkDcvXyCDPmYPipU91teU'
+twitterConsumerSecret = 'hCWm6rh6dmt7RJyJngiCMaZ7wmy5ov5cRGoRg3X8H2oa7Qjq2q'
+twitterAccessToken = '700699506917163009-75y7fuODGLSaJEOtxqhS0zgZ7GhDVKZ'
+twitterAccessSecret = 'C7QghhhO6HbjZAdd90t14Ob1mGtbytTXPMQLfRzibXxvE'
+
+twitterConsumerKeyDs = 'j1v97K5Y4DYjWFMdjgaoSIZ5i'
+twitterConsumerSecretDs = 'cFhPovVkbFWOVSfrOXIVW40vuySm9BdIWTKR5b9U3hozobf9cP'
+twitterAccessTokenDs = '1505913413922349056-l194lAmYYHswnjzkF9zjg9JooOB5ji'
+twitterAccessSecretDs = 'dy0bvV6ZFFXUNVv5A5P9n7GVipXtGnFF9MztnGpCRxhT5'
 
 auth = tweepy.OAuthHandler(twitterConsumerKey, twitterConsumerSecret)
 auth.set_access_token(twitterAccessToken, twitterAccessSecret)
