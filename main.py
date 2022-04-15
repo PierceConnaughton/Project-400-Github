@@ -1,6 +1,6 @@
 from ast import If
 from logging import root
-#from tkinter.tix import WINDOW
+from tkinter.tix import WINDOW
 from tracemalloc import start
 from turtle import left
 from typing import Text
@@ -31,8 +31,8 @@ from kivymd.uix.screen import MDScreen
 from kivy.properties import ObjectProperty, StringProperty
 
 #Set size of screen
-#from kivy.core.window import Window
-#Window.size = (370, 560)
+from kivy.core.window import Window
+Window.size = (370, 560)
 
 # Create the screen manager
 sm = ScreenManager()
